@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esports Universe | NEXUS</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-cyan" id="primary-glow"></div>
+        <div class="glow glow-purple" id="secondary-glow"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">NEXUS_ESPORTS</div>
+        <div class="controls">
+            <a href="index.html" class="neon-btn cyan-btn" style="text-decoration: none; padding-top: 12px;">← BACK</a>
+            <input type="text" id="search" class="glass-input" placeholder="Search database...">
+            <button onclick="toggleOverdrive()" class="neon-btn cyan-btn">⚡ OVERDRIVE</button>
+        </div>
+    </nav>
+
+    <main>
+        <header class="hero center-text">
+            <h1 class="text-3d">ESPORTS UNIVERSE</h1>
+            <p class="typewriter" id="hero-subtitle">Initializing global tournament tracking protocols...</p>
+        </header>
+
+        <section class="stats glass-panel">
+            <div class="stat">
+                <h2 id="gamesCount" class="neon-text">0</h2>
+                <p>Tracked Titles</p>
+            </div>
+            <div class="stat">
+                <h2 id="tournamentsCount" class="neon-text">0</h2>
+                <p>Active Tournaments</p>
+            </div>
+        </section>
+
+        <section class="showcase-section">
+            <h3 class="section-title">Trending Now</h3>
+            <div class="carousel" id="carousel"></div>
+        </section>
+
+        <section id="gamesGrid" class="cards-grid"></section>
+    </main>
+
+    <script src="script2.js"></script>
+</body>
+</html>

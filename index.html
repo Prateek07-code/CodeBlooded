@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS | Choose Your Arena</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="//unpkg.com/three"></script>
+    <script src="//unpkg.com/globe.gl"></script>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-cyan"></div>
+        <div class="glow glow-purple"></div>
+    </div>
+
+    <section class="landing-hero">
+        <div class="landing-container">
+            <h1 class="glitch-text" data-text="SELECT YOUR ARENA">SELECT YOUR ARENA</h1>
+            <p class="subtitle">System Online. Awaiting Commander Input.</p>
+
+            <div class="isometric-grid">
+                <a href="#" class="iso-card mobile-games">
+                    <div class="iso-content">
+                        <img src="https://img.icons8.com/ios-filled/100/ffffff/smartphone-tablet.png" alt="Mobile">
+                        <h3>MOBILE</h3>
+                    </div>
+                </a>
+                
+                <a href="pc-games.html" class="iso-card pc-games">
+                    <div class="iso-content">
+                        <img src="https://img.icons8.com/ios-filled/100/ffffff/workstation.png" alt="PC">
+                        <h3>PC GAMES</h3>
+                    </div>
+                </a>
+
+                <a href="esports.html" class="iso-card esports">
+                    <div class="iso-content">
+                        <img src="https://img.icons8.com/ios-filled/100/ffffff/trophy.png" alt="Esports">
+                        <h3>ESPORTS</h3>
+                    </div>
+                </a>
+            </div>
+            
+            <div style="margin-top: 80px; color: var(--neon-cyan); opacity: 0.7; animation: bounce 2s infinite;">
+                <p style="letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase;">Scroll for Live Server Topology</p>
+                <span>↓</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="globe-section">
+        <div class="overlay-ui">
+            <h1 class="globe-title">GLOBAL NETWORK</h1>
+            <p class="globe-subtitle">ACTIVE NODES: JPN | CHN | IND | USA | GBR | SWE</p>
+        </div>
+        <div id="globeViz"></div>
+    </section>
+
+    <script src="script.js"></script>
+
+    <script>
+        const targetCountries = ['JPN', 'CHN', 'IND', 'USA', 'GBR', 'SWE'];
+        
+        const regionData = {
+            'GBR': { game: 'Red Dead Redemption 2', logo: 'assets/rdr2.png' },
+            'USA': { game: 'Grand Theft Auto V', logo: 'assets/gta5.png' },
+            'CHN': { game: 'Genshin Impact', logo: 'assets/genshin-impact.png' },
+            'IND': { game: 'Razi', logo: 'assets/razi.jpeg' },
+            'JPN': { game: 'Elden Ring', logo: 'assets/elden.jpg' },
+            'SWE': { game: 'Minecraft', logo: 'assets/minecraft.jpg' } 
+        };
+
+        const world = Globe()
+            (document.getElementById('globeViz'))
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
+            .backgroundColor('rgba(0,0,0,0)') 
+            .polygonAltitude(0.01)
+            .polygonSideColor(() => 'rgba(0, 243, 255, 0.1)')
+            .polygonStrokeColor(() => '#00f3ff')
+            
+            .polygonLabel(({ properties: d }) => {
+                const isActive = targetCountries.includes(d.ISO_A3);
+                if (!isActive) return ''; 
+
+                const countryInfo = regionData[d.ISO_A3];
+                
+                return `
+                    <div class="custom-tooltip">
+                        <h3>${d.ADMIN}</h3>
+                        <span class="status">SERVER STATUS: <span style="color:#00f3ff">ONLINE</span></span>
+                        <div class="game-highlight">
+                            <img src="${countryInfo.logo}" alt="${countryInfo.game}" class="game-logo" onerror="this.style.display='none'">
+                            <div class="game-info">
+                                <span>Top Played Title</span>
+                                <strong>${countryInfo.game}</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            })
+            
+            .onPolygonHover(hoverD => world
+                .polygonAltitude(d => d === hoverD ? 0.08 : 0.01)
+                .polygonCapColor(d => {
+                    if (d === hoverD && targetCountries.includes(d.properties.ISO_A3)) return '#ffb703'; 
+                    if (targetCountries.includes(d.properties.ISO_A3)) return 'rgba(0, 243, 255, 0.5)'; 
+                    return 'rgba(0, 0, 0, 0.1)'; 
+                })
+            )
+            
+            .onPolygonClick(({ properties: d }) => {
+                if (targetCountries.includes(d.ISO_A3)) {
+                    alert(`Connecting to ${d.ADMIN}... Loading ${regionData[d.ISO_A3].game} servers.`);
+                }
+            });
+
+        fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
+            .then(res => res.json())
+            .then(countries => {
+                world.polygonsData(countries.features);
+                world.pointOfView({ lat: 35, lng: 0, altitude: 2.5 });
+            });
+
+        world.controls().autoRotate = true;
+        world.controls().autoRotateSpeed = 1.0;
+
+        const globeContainer = document.getElementById('globeViz');
+        globeContainer.addEventListener('mouseenter', () => { world.controls().autoRotate = false; });
+        globeContainer.addEventListener('mouseleave', () => { world.controls().autoRotate = true; });
+    </script>
+</body>
+</html>
