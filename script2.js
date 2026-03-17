@@ -1,7 +1,7 @@
 const gamesData = [
     {
         name: "VALORANT",
-        image: "assets/valo.jpeg",
+        image: "valo.jpeg",
         tournaments: [
             { name: "VCT Champions", link: "https://liquipedia.net/valorant/VCT" },
             { name: "Masters Madrid", link: "https://liquipedia.net/valorant" },
@@ -10,7 +10,7 @@ const gamesData = [
     },
     {
         name: "Dota 2",
-        image: "assets/dota2.jpg",
+        image: "dota2.jpg",
         tournaments: [
             { name: "The International", link: "#" },
             { name: "DreamLeague", link: "#" }
@@ -18,7 +18,7 @@ const gamesData = [
     },
     {
         name: "CS:2",
-        image: "assets/cs2.jpg",
+        image: "cs2.jpg",
         tournaments: [
             { name: "BLAST Premier", link: "#" },
             { name: "ESL Pro League", link: "#" }
